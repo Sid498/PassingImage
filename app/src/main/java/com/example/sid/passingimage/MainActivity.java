@@ -12,9 +12,12 @@ import android.view.View;
 import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 ImageView imageView;
+    Uri image;
+    Bitmap bitmap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,12 +31,13 @@ ImageView imageView;
         startActivityForResult(intent,100);
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 100 && resultCode == RESULT_OK){
-            Uri image = data.getData();
+             image = data.getData();
             /*String[] filePath = {MediaStore.Images.Media.DATA};
 
             Cursor cursor = getContentResolver().query(image,filePath,null,null,null);
@@ -42,13 +46,26 @@ ImageView imageView;
             int index = cursor.getColumnIndex(filePath[0]);
             String path = cursor.getString(index);
             cursor.close();
-            imageView.setImageBitmap(BitmapFactory.decodeFile(path));*/
+            imageView.setImageBitmap(BitmapFactory.decodeFile(path));*//**//*
 
-            imageView.setImageURI(image);
+            imageView.setImageURI(image);*/
 
-            Intent intent = new Intent(this,Second.class);
-            intent.putExtra("image",image);
-            startActivity(intent);
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),image);
+                imageView.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
         }
+    }
+
+    public void sendImage(View view){
+        Intent intent = new Intent(MainActivity.this,Second.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("image",bitmap);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }

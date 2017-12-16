@@ -16,6 +16,15 @@
         android:layout_centerVertical="true"
         android:text="Button" />
 
+    <Button
+        android:onClick="sendImage"
+        android:id="@+id/btnSend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="send"
+        android:layout_below="@+id/btnImage"
+        android:layout_alignStart="@+id/btnImage" />
+
     <ImageView
         android:id="@+id/imageview"
         android:src="@mipmap/ic_launcher"
